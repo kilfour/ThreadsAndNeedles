@@ -2,7 +2,7 @@
 
 Je bouwt de kern van een endpoint dat informatie uit meerdere bronnen samenbrengt.
 
-De starter bevat drie fake externe services.
+Stel dat drie externe services in een echte applicatie elk ongeveer 250 ms nodig hebben:
 
 ```text
 Profile service       ongeveer 250 ms
@@ -43,11 +43,17 @@ Bij cancellation moet cancellation zichtbaar blijven voor de caller.
 
 Als 1 dependency faalt, mag de methode geen gedeeltelijk dashboard als succes tellen.
 
+Start alle calls voordat je op hun gezamenlijke voltooiing wacht. Daardoor worden ook calls na een snel gefaalde task nog gestart en worden de gestarte tasks als één geheel geobserveerd.
+
 ## Testen
 
-Maak alle tests in `DashboardServiceTests` groen.
+Verwijder `Skip = "Not Implemented"` bij alle tests in `DashboardServiceTests`. Controleer eerst dat de starterimplementatie rood is en maak alle tests daarna groen. Laat ze vervolgens ingeschakeld.
 
-Voer daarna de volledige suite uit.
+De tests gebruiken een gedeeld vrijgavesignaal. Ze meten dus niet hoe snel je computer is, maar controleren rechtstreeks dat alle dependencies gestart zijn voordat een ervan kan voltooien.
+
+De stresstest voor `SuccessfulLoads` kan een verloren update zichtbaar maken, maar geen enkele stresstest bewijst thread-safety. Controleer daarom ook in de code dat de increment atomair gebeurt en dat de property een geschikte thread-safe read gebruikt.
+
+Voer daarna de volledige suite uit. Er mag alleen nog één test overgeslagen zijn: het bewuste `UnsafeCounterExperimentExpectedTotal`-experiment uit module 6.
 
 ```bash
 dotnet test

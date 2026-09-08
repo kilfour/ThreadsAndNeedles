@@ -1,4 +1,4 @@
-namespace ConcurrencyLab;
+namespace ThreadsAndNeedles.M08_AsyncPitfalls;
 
 public static class AsyncPitfallsExercises
 {

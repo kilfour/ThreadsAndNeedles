@@ -1,4 +1,4 @@
-namespace ConcurrencyLab;
+namespace ThreadsAndNeedles.M02_Tasks;
 
 public static class TaskExperiments
 {

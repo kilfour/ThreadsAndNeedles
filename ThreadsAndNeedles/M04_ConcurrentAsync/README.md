@@ -48,7 +48,7 @@ De twee loaders zijn onafhankelijk en moeten gestart worden voordat je op hun re
 
 Gebruik geen `Task.Run`.
 
-Maak de tests groen.
+Verwijder `Skip = "Not Implemented"` bij de test voor deze opdracht. Controleer eerst dat de sequentiële startercode de test rood maakt en maak hem daarna groen. Laat de test vervolgens ingeschakeld.
 
 ## Belangrijk
 

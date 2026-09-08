@@ -48,7 +48,7 @@ Ze moet:
 * het resultaat trimmen
 * het resultaat omzetten naar uppercase
 
-Maak `AsyncAwaitExercisesTests` groen.
+Verwijder `Skip = "Not Implemented"` bij de test in `AsyncAwaitExercisesTests`. Controleer eerst dat de startercode de test rood maakt en maak hem daarna groen. Laat de test vervolgens ingeschakeld.
 
 ## Extra experiment
 

@@ -49,7 +49,7 @@ De methode wacht asynchroon en geeft daarna `value` terug.
 
 Gebruik `Task.Delay`, niet `Thread.Sleep`.
 
-Maak de tests in `TaskExperimentsTests` groen.
+Verwijder `Skip = "Not Implemented"` bij de test in `TaskExperimentsTests`. Controleer eerst dat de startercode de test rood maakt en maak hem daarna groen. Laat de test vervolgens ingeschakeld.
 
 ## Denkvragen
 

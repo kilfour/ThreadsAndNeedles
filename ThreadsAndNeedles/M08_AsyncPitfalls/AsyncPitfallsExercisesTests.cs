@@ -1,56 +1,81 @@
-using System.Diagnostics;
-using ConcurrencyLab;
-
-namespace ConcurrencyLab.Tests;
+namespace ThreadsAndNeedles.M08_AsyncPitfalls;
 
 public class AsyncPitfallsExercisesTests
 {
-    [Fact]
-    public async Task LoadWithoutBlockingAsyncReturnsLoaderResult()
+    [Fact(Skip = "Not Implemented")]
+    public async Task LoadWithoutBlockingAsyncReturnsBeforeLoaderCompletes()
     {
-        var result = await AsyncPitfallsExercises.LoadWithoutBlockingAsync(
-            async () =>
-            {
-                await Task.Delay(10);
-                return "ok";
-            });
+        var loaderResult = new TaskCompletionSource<string>(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+
+        var invocation = Task.Factory.StartNew(
+            () => AsyncPitfallsExercises.LoadWithoutBlockingAsync(() => loaderResult.Task),
+            CancellationToken.None,
+            TaskCreationOptions.DenyChildAttach,
+            TaskScheduler.Default);
+
+        Task<string>? returnedTask = null;
+
+        try
+        {
+            returnedTask = await invocation.WaitAsync(TimeSpan.FromSeconds(2));
+            Assert.False(returnedTask.IsCompleted);
+        }
+        finally
+        {
+            loaderResult.TrySetResult("ok");
+        }
+
+        var result = await returnedTask;
 
         Assert.Equal("ok", result);
     }
 
-    [Fact]
+    [Fact(Skip = "Not Implemented")]
     public async Task SaveBeforeReturningAsyncWaitsForSave()
     {
-        var saved = false;
+        var saveFinished = new TaskCompletionSource(
+            TaskCreationOptions.RunContinuationsAsynchronously);
 
-        await AsyncPitfallsExercises.SaveBeforeReturningAsync(
-            async () =>
-            {
-                await Task.Delay(30);
-                saved = true;
-            });
+        var saveTask = AsyncPitfallsExercises.SaveBeforeReturningAsync(
+            () => saveFinished.Task);
+        var returnedBeforeSaveFinished = saveTask.IsCompleted;
 
-        Assert.True(saved);
+        saveFinished.SetResult();
+        await saveTask;
+
+        Assert.False(returnedBeforeSaveFinished);
     }
 
-    [Fact]
+    [Fact(Skip = "Not Implemented")]
     public async Task LoadIndependentValuesAsyncRunsConcurrently()
     {
-        var stopwatch = Stopwatch.StartNew();
+        var release = new TaskCompletionSource(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+        var firstStarted = false;
+        var secondStarted = false;
 
-        async Task<string> Load(string value)
+        async Task<string> LoadFirst()
         {
-            await Task.Delay(120);
-            return value;
+            firstStarted = true;
+            await release.Task;
+            return "first";
         }
 
-        var result = await AsyncPitfallsExercises.LoadIndependentValuesAsync(
-            () => Load("first"),
-            () => Load("second"));
+        async Task<string> LoadSecond()
+        {
+            secondStarted = true;
+            await release.Task;
+            return "second";
+        }
 
-        stopwatch.Stop();
+        var loadTask = AsyncPitfallsExercises.LoadIndependentValuesAsync(LoadFirst, LoadSecond);
+        var bothStartedBeforeRelease = firstStarted && secondStarted;
+
+        release.SetResult();
+        var result = await loadTask;
 
         Assert.Equal(("first", "second"), result);
-        Assert.True(stopwatch.Elapsed < TimeSpan.FromMilliseconds(210));
+        Assert.True(bothStartedBeforeRelease, "Both loaders must start before either one completes.");
     }
 }

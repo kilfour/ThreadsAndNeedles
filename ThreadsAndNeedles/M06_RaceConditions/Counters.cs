@@ -1,4 +1,4 @@
-namespace ConcurrencyLab;
+namespace ThreadsAndNeedles.M06_RaceConditions;
 
 public sealed class UnsafeCounter
 {
@@ -16,6 +16,7 @@ public sealed class SafeCounter
 {
     private int value;
 
+    // TODO: make reads safe while other threads may be writing.
     public int Value => value;
 
     public void Increment()
@@ -27,9 +28,11 @@ public sealed class SafeCounter
 
 public sealed class SafeLedger
 {
+    private readonly object gate = new();
     private decimal balance;
     private int operationCount;
 
+    // TODO: take the snapshot under the same lock used by Add.
     public (decimal Balance, int OperationCount) Snapshot()
         => (balance, operationCount);
 

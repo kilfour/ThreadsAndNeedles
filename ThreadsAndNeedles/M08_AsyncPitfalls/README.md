@@ -71,6 +71,14 @@ Voor achtergrondwerk gebruik je beter een expliciet achtergrondmechanisme met ee
 
 Open `AsyncPitfallsExercises`.
 
+Voorspel vóór je iets wijzigt voor elke methode:
+
+* of de methode haar caller kan blokkeren
+* of de methode te vroeg kan voltooien
+* of onafhankelijk werk sequentieel uitgevoerd wordt
+
 Herstel de drie methodes zonder `.Result`, `.Wait()` of onnodig fire-and-forget gedrag.
 
-Maak de tests groen.
+Verwijder `Skip = "Not Implemented"` bij de drie tests. Controleer eerst dat elke valkuil door minstens één rode test zichtbaar wordt en maak de tests daarna groen. Laat ze vervolgens ingeschakeld.
+
+Leg na elke aanpassing uit welk probleem je hebt verwijderd. Alleen een groen resultaat is bij concurrency-code niet voldoende bewijs dat de redenering klopt.

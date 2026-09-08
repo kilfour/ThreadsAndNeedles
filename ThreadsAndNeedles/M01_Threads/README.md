@@ -49,11 +49,13 @@ De methode moet:
 * wachten tot de thread klaar is
 * het managed thread id van die thread teruggeven
 
-Maak daarna deze test groen:
+Verwijder daarna `Skip = "Not Implemented"` bij deze test en maak hem groen:
 
 ```text
 RunOnDedicatedThreadUsesAnotherThread
 ```
+
+Laat de test ingeschakeld zodra de opdracht afgewerkt is.
 
 ## Denkvragen
 

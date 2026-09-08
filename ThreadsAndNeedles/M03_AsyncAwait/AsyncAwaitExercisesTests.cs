@@ -1,10 +1,8 @@
-using ConcurrencyLab;
-
-namespace ConcurrencyLab.Tests;
+namespace ThreadsAndNeedles.M03_AsyncAwait;
 
 public class AsyncAwaitExercisesTests
 {
-    [Fact]
+    [Fact(Skip = "Not Implemented")]
     public async Task LoadAndTransformAsyncLoadsOnceAndTransformsValue()
     {
         var calls = 0;

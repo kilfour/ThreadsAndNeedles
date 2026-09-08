@@ -51,12 +51,15 @@ In ASP.NET Core is zomaar CPU werk in `Task.Run` stoppen meestal geen schaalbaar
 Implementeer:
 
 ```csharp
-public static Task<(long Result, int ThreadId)> CalculateOnThreadPoolAsync(int iterations)
+public static Task<(long Result, int ThreadId, bool IsThreadPoolThread)>
+    CalculateOnThreadPoolAsync(int iterations)
 ```
 
-Gebruik `Task.Run` om `CpuWork.Calculate` uit te voeren. Geef naast het resultaat ook het managed thread id terug waarop de berekening uitgevoerd werd.
+Gebruik `Task.Run` om `CpuWork.Calculate` uit te voeren. Geef naast het resultaat ook het managed thread id en `Thread.CurrentThread.IsThreadPoolThread` terug van de thread waarop de berekening uitgevoerd werd.
 
-Maak de tests groen.
+De test roept de methode bewust aan vanaf een dedicated thread. Alleen vergelijken met het thread-id van een gewone async test is niet betrouwbaar: de test zelf kan namelijk ook al op een thread-pool thread draaien.
+
+Verwijder `Skip = "Not Implemented"` bij de test voor deze opdracht. Controleer eerst dat de startercode de test rood maakt en maak hem daarna groen. Laat de test vervolgens ingeschakeld.
 
 ## Denkvragen
 

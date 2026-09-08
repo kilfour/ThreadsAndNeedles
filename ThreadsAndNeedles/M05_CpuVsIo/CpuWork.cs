@@ -14,10 +14,14 @@ public static class CpuWork
         return result;
     }
 
-    public static async Task<(long Result, int ThreadId)> CalculateOnThreadPoolAsync(int iterations)
+    public static async Task<(long Result, int ThreadId, bool IsThreadPoolThread)> CalculateOnThreadPoolAsync(
+        int iterations)
     {
-        // TODO: execute Calculate on a thread-pool thread and report that thread's id.
+        // TODO: execute Calculate on a thread-pool thread and report its thread information.
         await Task.CompletedTask;
-        return (Calculate(iterations), Environment.CurrentManagedThreadId);
+        return (
+            Calculate(iterations),
+            Environment.CurrentManagedThreadId,
+            Thread.CurrentThread.IsThreadPoolThread);
     }
 }

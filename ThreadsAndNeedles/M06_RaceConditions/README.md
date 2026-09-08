@@ -24,7 +24,7 @@ Dat is een race condition.
 
 `UnsafeCounter` verhoogt een gedeelde integer vanuit veel parallel werk.
 
-Run de test meerdere keren.
+De test `UnsafeCounterExperimentExpectedTotal` heeft bewust een andere `Skip`-reden dan de opdrachten. Verwijder die `Skip` alleen tijdelijk en run de test meerdere keren. Wanneer updates verloren gaan, wordt de test rood en zie je het kleinere resultaat. Een toevallige groene run bewijst niet dat de implementatie veilig is. Zet de demonstratie daarna opnieuw op `Skip`, zodat de volledige suite niet onbetrouwbaar wordt.
 
 Een race condition is timing afhankelijk. Dat betekent dat buggy code soms toch het juiste resultaat kan geven.
 
@@ -55,6 +55,10 @@ Maak `SafeCounter` thread-safe.
 
 Maak daarna `ThreadSafeCounterNeverLosesUpdates` groen.
 
-Implementeer ook `SafeLedger.Add` zodat balance en operation count samen consistent aangepast worden.
+Gebruik `Interlocked.Increment` voor de update. Gebruik voor `Value` een geschikte atomaire of volatile read, zodat de property ook veilig gelezen kan worden terwijl andere threads schrijven.
 
-Gebruik hiervoor `lock`.
+Implementeer ook `SafeLedger.Add` zodat balance en operation count samen consistent aangepast worden. Een snapshot mag nooit een nieuwe balance met een oude operation count combineren, of omgekeerd.
+
+Gebruik daarom in zowel `Add` als `Snapshot` dezelfde private lock. De lock beschermt de invariant tussen de twee velden; alleen de schrijfmethode locken is niet voldoende wanneer snapshots tegelijk met updates kunnen gebeuren.
+
+Verwijder bij de drie opdracht-tests `Skip = "Not Implemented"`, controleer dat de startercode rood is en maak de tests groen. Laat deze drie tests daarna ingeschakeld. Alleen de niet-deterministische `UnsafeCounterExperimentExpectedTotal` blijft overgeslagen.

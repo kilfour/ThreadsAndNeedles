@@ -1,4 +1,4 @@
-namespace ConcurrencyLab;
+namespace ThreadsAndNeedles.M01_Threads;
 
 public static class ThreadExperiments
 {

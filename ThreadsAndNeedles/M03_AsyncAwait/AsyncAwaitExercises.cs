@@ -1,4 +1,4 @@
-namespace ConcurrencyLab;
+namespace ThreadsAndNeedles.M03_AsyncAwait;
 
 public static class AsyncAwaitExercises
 {

@@ -1,4 +1,4 @@
-namespace ConcurrencyLab;
+namespace ThreadsAndNeedles.M10_FinalChallenge;
 
 public sealed record Profile(string Name);
 public sealed record Order(int Id);
@@ -31,6 +31,7 @@ public sealed class DashboardService(
 {
     private int successfulLoads;
 
+    // TODO: make reads safe while other threads may be updating the counter.
     public int SuccessfulLoads => successfulLoads;
 
     public async Task<Dashboard> LoadAsync(CancellationToken cancellationToken)

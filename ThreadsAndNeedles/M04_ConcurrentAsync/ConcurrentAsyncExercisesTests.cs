@@ -1,30 +1,36 @@
-using System.Diagnostics;
-using ConcurrencyLab;
-
-namespace ConcurrencyLab.Tests;
+namespace ThreadsAndNeedles.M04_ConcurrentAsync;
 
 public class ConcurrentAsyncExercisesTests
 {
-    [Fact]
+    [Fact(Skip = "Not Implemented")]
     public async Task LoadBothAsyncStartsBothOperationsBeforeWaiting()
     {
-        var stopwatch = Stopwatch.StartNew();
+        var release = new TaskCompletionSource(
+            TaskCreationOptions.RunContinuationsAsynchronously);
+        var firstStarted = false;
+        var secondStarted = false;
 
-        async Task<string> Load(string value)
+        async Task<string> LoadFirst()
         {
-            await Task.Delay(150);
-            return value;
+            firstStarted = true;
+            await release.Task;
+            return "A";
         }
 
-        var result = await ConcurrentAsyncExercises.LoadBothAsync(
-            () => Load("A"),
-            () => Load("B"));
+        async Task<string> LoadSecond()
+        {
+            secondStarted = true;
+            await release.Task;
+            return "B";
+        }
 
-        stopwatch.Stop();
+        var loadTask = ConcurrentAsyncExercises.LoadBothAsync(LoadFirst, LoadSecond);
+        var bothStartedBeforeRelease = firstStarted && secondStarted;
+
+        release.SetResult();
+        var result = await loadTask;
 
         Assert.Equal(("A", "B"), result);
-        Assert.True(
-            stopwatch.Elapsed < TimeSpan.FromMilliseconds(260),
-            $"Expected concurrent execution, elapsed: {stopwatch.ElapsedMilliseconds} ms");
+        Assert.True(bothStartedBeforeRelease, "Both loaders must start before either one completes.");
     }
 }

@@ -1,4 +1,4 @@
-namespace ConcurrencyLab;
+namespace ThreadsAndNeedles.M04_ConcurrentAsync;
 
 public static class ConcurrentAsyncExercises
 {

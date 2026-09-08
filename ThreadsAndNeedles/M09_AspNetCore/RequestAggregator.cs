@@ -1,4 +1,4 @@
-namespace ConcurrencyLab;
+namespace ThreadsAndNeedles.M09_AspNetCore;
 
 public sealed record AggregatedResult(string First, string Second);
 

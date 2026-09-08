@@ -72,8 +72,10 @@ Geef hem door naar database, HTTP en andere APIs die cancellation ondersteunen.
 Implementeer de methode zodat:
 
 * beide onafhankelijke calls concurrent starten
-* de cancellation token aan beide calls wordt doorgegeven
+* exact dezelfde cancellation token aan beide calls wordt doorgegeven
 * de methode wacht tot beide resultaten beschikbaar zijn
 * exceptions niet verborgen worden
 
-Maak de tests groen.
+Verwijder `Skip = "Not Implemented"` bij beide tests. Controleer eerst dat de startercode rood is en maak de tests daarna groen. Laat ze vervolgens ingeschakeld.
+
+De tests gebruiken coördinatiesignalen in plaats van stopwatchgrenzen. Daarmee controleren ze rechtstreeks of beide calls gestart zijn voordat een van beide kan voltooien; de snelheid van de testmachine speelt geen rol.

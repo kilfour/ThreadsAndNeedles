@@ -1,19 +1,21 @@
 using System.Diagnostics;
-using ConcurrencyLab;
 
-namespace ConcurrencyLab.Tests;
+namespace ThreadsAndNeedles.M02_Tasks;
 
 public class TaskExperimentsTests
 {
-    [Fact]
-    public async Task CompleteLaterReturnsValueAfterDelay()
+    [Fact(Skip = "Not Implemented")]
+    public async Task CompleteLaterReturnsValueAfterAsynchronousDelay()
     {
         var stopwatch = Stopwatch.StartNew();
 
-        var result = await TaskExperiments.CompleteLater("done", TimeSpan.FromMilliseconds(80));
+        var task = TaskExperiments.CompleteLater("done", TimeSpan.FromMilliseconds(80));
+        var completedBeforeAwait = task.IsCompleted;
+        var result = await task;
 
         stopwatch.Stop();
 
+        Assert.False(completedBeforeAwait);
         Assert.Equal("done", result);
         Assert.True(stopwatch.ElapsedMilliseconds >= 50);
     }

@@ -53,9 +53,19 @@ Implementeer `RepeatUntilCancelledAsync`.
 
 De methode moet:
 
+* vóór de eerste iteratie controleren of cancellation al aangevraagd is
 * `action` herhaald uitvoeren
+* de cancellation token aan `action` doorgeven
 * tussen iteraties asynchroon wachten
 * de meegegeven cancellation token respecteren
 * `OperationCanceledException` laten doorstromen
 
-Maak de tests groen.
+De action heeft daarom deze vorm:
+
+```csharp
+Func<CancellationToken, Task> action
+```
+
+Cancellation beëindigt de methode dus met een cancelled task; de methode keert niet succesvol terug alsof het werk voltooid was.
+
+Verwijder `Skip = "Not Implemented"` bij beide tests. Controleer eerst dat de startercode rood is en maak de tests daarna groen. Laat ze vervolgens ingeschakeld.

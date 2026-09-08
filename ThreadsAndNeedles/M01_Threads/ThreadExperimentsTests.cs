@@ -1,6 +1,4 @@
-using ConcurrencyLab;
-
-namespace ConcurrencyLab.Tests;
+namespace ThreadsAndNeedles.M01_Threads;
 
 public class ThreadExperimentsTests
 {
@@ -10,7 +8,7 @@ public class ThreadExperimentsTests
         Assert.True(ThreadExperiments.CurrentThreadId() > 0);
     }
 
-    [Fact]
+    [Fact(Skip = "Not Implemented")]
     public void RunOnDedicatedThreadUsesAnotherThread()
     {
         var callerThreadId = Environment.CurrentManagedThreadId;
