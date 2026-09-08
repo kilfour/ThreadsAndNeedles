@@ -39,8 +39,6 @@ Het `git grep`-commando hoort bij de eindcontrole geen resultaten meer te tonen.
 
 Alleen `UnsafeCounterExperimentExpectedTotal` blijft normaal overgeslagen. Dat is een bewust niet-deterministisch experiment uit module 6.
 
-Voor voorbereiding, observatiepunten en een nakijkrubric: zie [TEACHING_NOTES.md](TEACHING_NOTES.md).
-
 ## Modules
 
 1. Processes en threads
