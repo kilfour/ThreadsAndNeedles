@@ -1,5 +1,7 @@
 # ThreadsAndNeedles
 
+Deze workshop onderzoekt concurrency en asynchroon programmeren in .NET. Je begint bij threads en processen, maar bouwt geleidelijk op naar Task, async/await, gedeelde state, cancellation en async code in ASP.NET Core
+
 ## Werkwijze
 
 Werk de modules in volgorde af. Elke module bevat:
